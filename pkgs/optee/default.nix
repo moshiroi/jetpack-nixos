@@ -207,11 +207,11 @@ let
     meta.platforms = [ "aarch64-linux" ];
   };
 
-  buildHwKeyAgent = args: stdenv.mkDerivation {
+  buildHwKeyAgent = hwKeyAgentPatches: args: stdenv.mkDerivation {
     pname = "hwkey-agent";
     version = l4tMajorMinorPatchVersion;
     src = nvopteeSrc;
-    patches = [ ./0001-nvoptee-no-install-makefile.patch ];
+    patches = [ ./0001-nvoptee-no-install-makefile.patch ] ++ hwKeyAgentPatches;
     nativeBuildInputs = [ (buildPackages.python3.withPackages (p: [ p.cryptography ])) ];
     enableParallelBuilding = true;
     makeFlags = [
@@ -307,7 +307,7 @@ let
       meta.platforms = [ "aarch64-linux" ];
     });
 
-  buildTOS = { socType, ... }@args:
+  buildTOS = hwKeyAgentPatches: { socType, ... }@args:
     let
       armTrustedFirmware = buildArmTrustedFirmware args;
 
@@ -315,7 +315,7 @@ let
 
       nvLuksSrv = buildNvLuksSrv args;
       cpuBlPayloadDec = buildCpuBlPayloadDec args;
-      hwKeyAgent = buildHwKeyAgent args;
+      hwKeyAgent = buildHwKeyAgent hwKeyAgentPatches args;
 
       opteeOS = buildOptee ({
         earlyTaPaths = lib.optionals (socType == "t194" || socType == "t234") [

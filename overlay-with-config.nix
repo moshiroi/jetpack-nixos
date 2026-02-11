@@ -81,7 +81,7 @@ final: prev: (
         postPatch = postPatch + cfg.flashScriptOverrides.postPatch;
       });
 
-      tosImage = finalJetpack.buildTOS tosArgs;
+      tosImage = finalJetpack.buildTOS cfg.firmware.optee.hwKeyAgentPatches tosArgs;
       taDevKit = finalJetpack.buildOpteeTaDevKit tosArgs;
       pkcs11Ta = finalJetpack.buildPkcs11Ta tosArgs;
       opteeXtest = finalJetpack.buildOpteeXtest tosArgs;

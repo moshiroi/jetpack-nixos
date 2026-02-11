@@ -71,6 +71,17 @@ in
       patches = mkOption {
         type = types.listOf types.path;
         default = [ ];
+        description = ''
+          Patches to apply to the OP-TEE OS source.
+        '';
+      };
+
+      hwKeyAgentPatches = mkOption {
+        type = types.listOf types.path;
+        default = [ ];
+        description = ''
+          Patches to apply to the hwkey-agent TA and client application source.
+        '';
       };
 
       extraMakeFlags = mkOption {
